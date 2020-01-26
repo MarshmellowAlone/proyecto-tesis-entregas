@@ -4,30 +4,33 @@
       <img src="@/assets/images/logo.png" alt />
     </picture>
     <section>
-      <b-field>
-        <b-input placeholder="Usuario" 
-          v-model="user"
-          icon="user" 
-          class="username">
-        </b-input>
-      </b-field>
-      <b-field>
-        <b-input type="password"
-          v-model="password"
-          class="has-text-white password"
-          placeholder="Password reveal input"
-          password-reveal>
-        </b-input>
-      </b-field>
-      <b-button class="btn--login" @click="openLoading()">
-        Acceder
-        <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="true"></b-loading>
-      </b-button>
+      <form @submit.prevent="login">
+        <b-field>
+          <b-input placeholder="Usuario" 
+            v-model="user"
+            icon="user" 
+            class="username">
+          </b-input>
+        </b-field>
+        <b-field>
+          <b-input type="password"
+            v-model="password"
+            class="has-text-white password"
+            placeholder="Password reveal input"
+            password-reveal>
+          </b-input>
+        </b-field>
+        <b-button type="submit" class="btn--login" @click="openLoading()">
+          Acceder
+          <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="true"></b-loading>
+        </b-button>
+      </form>
     </section>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Login',
   computed: {
@@ -40,24 +43,39 @@ export default {
       isLoading: false,
       isFullPage: true,
       user: 'aldo',
-      password: '123456'
+      password: '123456',
+      error: 1
     }
   },
   methods: {
     openLoading() {
-     
+      // eslint-disable-next-line no-console
+      console.log('Se ejecutó openloading');
       this.isLoading = true
       setTimeout( () => {
         this.isLoading = false
-        this.$router.push({ name: 'user', params: { user: this.getUser } })
+        if ( this.login() === 0 ) {
+          this.$router.push({ name: 'user', params: { user: this.getUser } })
+        }
       }, 3 * 1000 )
+    },
+    login() {
+      // eslint-disable-next-line no-console
+      console.log('Se ejecutó login');
+      axios.get(`http://smpcourier.com/WS_SMPCOURIER/login.php`, {
+        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'},
+        user: this.user,
+        password: this.password
+      })
+      .then( response => {
+        // eslint-disable-next-line no-console
+        console.log( response );
+        this.error = response.error;
+      })
+      return this.error;
     }
   },
-  created() {
-    // eslint-disable-next-line no-console
-    () => console.log( this.user );
-  },
-};
+}
 </script>
 
 <style>

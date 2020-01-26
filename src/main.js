@@ -7,6 +7,7 @@ import { library, config } from "@fortawesome/fontawesome-svg-core"
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import routes from './routes'
+import axios from 'axios'
 
 config.autoAddCss = false;
 library.add( fas );
@@ -28,5 +29,6 @@ const router = new VueRouter({
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  axios
 }).$mount('#app')
