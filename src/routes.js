@@ -6,7 +6,10 @@ const router = [
    {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      beforeEnter: (to, from, next) => {
+         next()
+      }
    },
    {
       path: '/user/:user',

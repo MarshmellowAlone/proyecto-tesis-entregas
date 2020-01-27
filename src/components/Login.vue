@@ -4,7 +4,7 @@
       <img src="@/assets/images/logo.png" alt />
     </picture>
     <section>
-      <form @submit.prevent="login">
+      <form @submit.prevent="login()">
         <b-field>
           <b-input placeholder="Usuario" 
             v-model="user"
@@ -20,7 +20,7 @@
             password-reveal>
           </b-input>
         </b-field>
-        <b-button type="submit" class="btn--login" @click="openLoading()">
+        <b-button type="submit" class="btn--login" @click="login()">
           Acceder
           <b-loading :is-full-page="isFullPage" :active.sync="isLoading" :can-cancel="true"></b-loading>
         </b-button>
@@ -38,41 +38,44 @@ export default {
       return this.user;
     }
   },
+
   data() {
     return {
       isLoading: false,
       isFullPage: true,
-      user: 'aldo',
+      user: '',
       password: '123456',
       error: 1
     }
   },
   methods: {
-    openLoading() {
-      // eslint-disable-next-line no-console
-      console.log('Se ejecutó openloading');
-      this.isLoading = true
-      setTimeout( () => {
-        this.isLoading = false
-        if ( this.login() === 0 ) {
-          this.$router.push({ name: 'user', params: { user: this.getUser } })
-        }
-      }, 3 * 1000 )
-    },
+  
     login() {
-      // eslint-disable-next-line no-console
-      console.log('Se ejecutó login');
-      axios.get(`http://smpcourier.com/WS_SMPCOURIER/login.php`, {
-        headers: {'Access-Control-Allow-Origin': 'http://localhost:8080'},
-        user: this.user,
-        password: this.password
-      })
+      var vm = this
+      vm.$axios.get(`login.php?login=${vm.user}&clave=${vm.password}`)
       .then( response => {
-        // eslint-disable-next-line no-console
-        console.log( response );
-        this.error = response.error;
+        console.log(response)
+        if (response.data.error == 0) {
+            localStorage.setItem('login' , true)
+            vm.$buefy.notification.open({
+                    message: 'Ingreso correcto',
+                    type: 'is-success'
+                })
+            vm.$router.push({ name: 'user' , params: {user: vm.user}})
+        } else {
+          localStorage.removeItem('login')
+           vm.$buefy.notification.open({
+                    duration: 5000,
+                    message: `Error en el logeo`,
+                    position: 'is-bottom-right',
+                    type: 'is-danger',
+                    hasIcon: true
+                })
+            
+        }
+      
       })
-      return this.error;
+      
     }
   },
 }
