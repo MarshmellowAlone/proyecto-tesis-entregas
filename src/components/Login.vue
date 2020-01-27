@@ -51,29 +51,30 @@ export default {
   methods: {
   
     login() {
+      this.isLoading = true
+      setTimeout(() => {
+          this.isLoading = false
+      }, 600 )
+            
       var vm = this
       vm.$axios.get(`login.php?login=${vm.user}&clave=${vm.password}`)
       .then( response => {
         console.log(response)
         if (response.data.error == 0) {
             localStorage.setItem('login' , true)
-            vm.$buefy.notification.open({
-                    message: 'Ingreso correcto',
-                    type: 'is-success'
-                })
             vm.$router.push({ name: 'user' , params: {user: vm.user}})
         } else {
           localStorage.removeItem('login')
-           vm.$buefy.notification.open({
-                    duration: 5000,
-                    message: `Error en el logeo`,
-                    position: 'is-bottom-right',
-                    type: 'is-danger',
-                    hasIcon: true
-                })
-            
+          this.isLoading = false
+          vm.$buefy.notification.open({
+            duration: 600,
+            message: `Error en el logeo`,
+            position: 'is-bottom-right',
+            type: 'is-danger',
+            hasIcon: true,
+            closable: false
+          })
         }
-      
       })
       
     }
@@ -125,7 +126,18 @@ span.has-text-primary {
   margin-top: 1rem;
   width: 100%;
 }
-.btn--login a {
+.btn--login span {
   color: aliceblue !important;
+}
+.notices {
+  bottom: 10px;
+  right: 10px;
+}
+.notification {
+  padding: .5rem !important;
+}
+.notices .notification {
+  width: 200px;
+  height: 50px !important;
 }
 </style>

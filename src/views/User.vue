@@ -38,38 +38,6 @@ export default {
                code: 'abc',
                address: 'Calle Ramon Castilla #478'
             },
-            // {
-            //    code: 'abcd',
-            //    address: 'Calle Ramon Castilla #478'
-            // },
-            // {
-            //    code: 'PKT1',
-            //    address: 'Calle Ramon Castilla #478'
-            // },
-            // {
-            //    code: 'PKT2',
-            //    address: 'Calle Tarapacá #258'
-            // },
-            // {
-            //    code: 'PKT3',
-            //    address: 'Calle Leandro Pastor #958'
-            // },
-            // {
-            //    code: 'PKT4',
-            //    address: 'Calle Monsalve Vaca #123'
-            // },
-            // {
-            //    code: 'PKT2',
-            //    address: 'Calle Tarapacá #258'
-            // },
-            // {
-            //    code: 'PKT3',
-            //    address: 'Calle Leandro Pastor #958'
-            // },
-            // {
-            //    code: 'PKT4',
-            //    address: 'Calle Monsalve Vaca #123'
-            // },
          ]
       }
    },

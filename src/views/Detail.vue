@@ -34,28 +34,70 @@
          <h2 class="detail--title">Datos Entrega</h2>
          <span class="is-size-7 is-block detail--text">Dirección: Av. Ramón Castilla #123</span>
          <span class="is-size-7 is-block detail--text">Ubigeo: Lambayeque-Chiclayo-Chiclayo</span>
-
-         <button class="button is-fullwidth is-outlined btn--start--delivery">Iniciar Entrega</button>
+         <div class="is-flex btn--container">
+            <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="back()">Listado</b-button>
+            <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map">Ver Mapa</b-button>
+         </div>
+         <button v-show="isActiveBtnStartDelivery" class="button is-fullwidth is-outlined btn--start--delivery" @click="startDelivery()">Iniciar Entrega</button>
+         <button v-show="isActiveBtnEndDelivery" class="button is-fullwidth is-outlined btn--end--delivery" @click="endDelivery()">Terminar Entrega</button>
       </div>
+      <b-modal :active.sync="isComponentModalActive"
+         has-modal-card
+         trap-focus
+         aria-role="dialog"
+         aria-modal
+      >
+         <form action="">
+            <div class="modal-card" style="width: auto">
+               <header class="modal-card-head">
+                  <p class="modal-card-title">Estado Paquete</p>
+               </header>
+               <section class="modal-card-body">
+                  <Delivery />
+               </section>
+               <footer class="is-flex modal-card-foot footer--modal">
+                  <button class="button is-primary">Enviar</button>
+               </footer>
+            </div>
+         </form>
+      </b-modal>
    </div>
 </template>
 
 <script>
 import Header from '../components/Header';
+import Delivery from '@/components/Delivery.vue'
 export default {
    name: 'detail',
+   data() {
+      return {
+         pkg: 0,
+         isActiveBtnEndDelivery: false,
+         isActiveBtnStartDelivery: true,
+         isComponentModalActive: false,
+      }
+   },
    computed: {
       getPaquete() {
          return `Detalle del paquete ${this.pkg}`
-      }
+      },
    },
-   data() {
-      return {
-         pkg: 0
+   methods: {
+      back() {
+         var vm = this
+         vm.$router.push({ name: 'user' })
+      },
+      startDelivery() {
+         this.isActiveBtnStartDelivery = false;
+         this.isActiveBtnEndDelivery = true;
+      },
+      endDelivery() {
+         this.isComponentModalActive = true
       }
    },
    components: {
-      Header
+      Header,
+      Delivery
    },
    created() {
       this.pkg = this.$route.params.pkg;
@@ -77,5 +119,23 @@ export default {
 }
 .btn--start--delivery:hover {
    color: aliceblue;
+}
+.btn--end--delivery {
+   color: aliceblue;
+   background-color: #c0392b;
+   margin-top: 1rem;
+}
+.btn--end--delivery:hover {
+   color: aliceblue;
+}
+.btn--container {
+   margin-top: .8rem;
+   justify-content: space-between;
+}
+.btn--show--map {
+   width: 80px !important;
+}
+.footer--modal {
+   justify-content: flex-end;
 }
 </style>
