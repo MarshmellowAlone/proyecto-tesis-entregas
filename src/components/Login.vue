@@ -49,34 +49,31 @@ export default {
     }
   },
   methods: {
-  
     login() {
       this.isLoading = true
-      setTimeout(() => {
-          this.isLoading = false
-      }, 600 )
-            
+      setTimeout( () => {
+        this.isLoading = false
+      }, 600 )  
       var vm = this
-      vm.$axios.get(`login.php?login=${vm.user}&clave=${vm.password}`)
+      vm.$axios.get( `login.php?login=${vm.user}&clave=${vm.password}` )
       .then( response => {
-        console.log(response)
-        if (response.data.error == 0) {
-            localStorage.setItem('login' , true)
-            vm.$router.push({ name: 'user' , params: {user: vm.user}})
+        console.log( response )
+        if ( response.data.error == 0 ) {
+            localStorage.setItem( 'login' , true )
+            vm.$router.push( { name: 'user' , params: { user: vm.user } } )
         } else {
-          localStorage.removeItem('login')
+          localStorage.removeItem( 'login' )
           this.isLoading = false
-          vm.$buefy.notification.open({
+          vm.$buefy.notification.open( {
             duration: 600,
             message: `Error en el logeo`,
             position: 'is-bottom-right',
             type: 'is-danger',
             hasIcon: true,
             closable: false
-          })
+          } )
         }
       })
-      
     }
   },
 }

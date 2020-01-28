@@ -5,16 +5,19 @@
          <div class="is-flex content--info">
                <div class="has-text-black detail">
                   <div class="is-flex content--distributor">
-                     <b-icon class="has-text-white" icon="user-tie"></b-icon>
+                     <b-icon icon="user-tie"></b-icon>
                      <span class="is-size-6 detail--distributor">Repartidor: {{ getDistributor }}</span>
                   </div>   
-                  <div class="list--item" v-for="(item, index) in pkgs" :key="index">
-                     <router-link :to="{ name: 'detail', params: { pkg: item.code } }">
-                        <Item :code="item.code" :address="item.address" />
+                  <div class="list--item" v-for="(item, index) in dataPkg" :key="index">
+                     <router-link :to="{ name: 'detail', params: { pkg: item.id } }">
+                        <Item :code="item.descripcion" :address="item.direccion_entrega" />
                      </router-link>
                   </div>
                </div>
-               <button class="is-size-7 btn send--position">Enviar Posición</button>
+               <div class="btnPosition">
+                  <button class="is-size-7 btn send--position" @click="sendPosition()">Enviar Posición</button>
+                  <button class="is-size-7 btn send--position" @click="stopPosition()">No Enviar Posición</button>
+               </div>
             <b-notification v-show="stateNotification" auto-close :duration="5000" class="has-background-danger has-text-white has-text-weight-bold welcome"   :closable="false">
                Bienvenido gracias {{ distributor }} por preferirnos
             </b-notification>
@@ -27,19 +30,27 @@
 <script>
 import Header from '../components/Header';
 import Item from '../components/PackageItem';
+import Axios from 'axios';
 export default {
    name: 'user',
    data() {
       return {
          distributor: null,
          stateNotification: true,
-         pkgs: [
-            {
-               code: 'abc',
-               address: 'Calle Ramon Castilla #478'
-            },
-         ]
+         dataPkg: [],
+         intervalTimer: null
       }
+   },
+   created() {
+      this.distributor = this.$route.params.user;
+      setTimeout( () => {
+         this.stateNotification = false;
+      }, 3000 );
+      this.$axios.get( `smp.php?login=${this.$route.params.user}` )
+      .then( response => {
+         this.dataPkg = response.data;
+         console.log( 'data', this.dataPkg );
+      })
    },
    computed: {
       getDistributor() {
@@ -49,15 +60,30 @@ export default {
          return Math.floor( Math.random() * 10 ) ;
       }
    },
+   methods: {
+      sendPosition() {
+         this.intervalTimer = setInterval( this.getPosition, 2000 )
+      },
+      stopPosition() {
+         clearInterval( this.intervalTimer )
+      },
+      getPosition() {
+         if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition( this.displayPosition )
+            console.log("aadada");
+         } else {
+            console.log("no soporta geolocalizión");
+         }
+      },
+      displayPosition( location ) {
+         const lng = location.coords.longitude;
+         const lat = location.coords.latitude;
+         console.log(`Longitud: ${lng} - Latitud: ${lat}`);
+      }
+   },
    components: {
       Header,
       Item
-   },
-   created() {
-      this.distributor = this.$route.params.user;
-      setTimeout( () => {
-         this.stateNotification = false;
-      }, 3000 )
    },
 }
 </script>
