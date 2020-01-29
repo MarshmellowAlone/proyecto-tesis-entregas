@@ -4,13 +4,11 @@ import Detail from "./views/Detail";
 import MapPkg from "./views/MapPkg";
 
 const router = [
+   
    {
       path: '/',
       name: 'home',
-      component: Home,
-      beforeEnter: (to, from, next) => {
-         next()
-      }
+      component: Home
    },
    {
       path: '/user/:user',
@@ -23,7 +21,7 @@ const router = [
             component: Detail,
             children: [
                {
-                  path: 'map',
+                  path: 'map/:latitud/:longitud',
                   name: 'map',
                   component: MapPkg
                }

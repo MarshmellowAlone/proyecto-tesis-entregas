@@ -1,15 +1,21 @@
 <template>
    <div>
       <Header :title="getTitle"></Header>
-      <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
+      <gmap-map 
+         :center="center" :zoom="12" style="width:100%;  height: 400px;">
+          <div slot="visible">
+         
+      </div>
          <gmap-marker v-for="(m,index) in markers" :key="index" :position="m.position"
             @click="center = m.position"
          ></gmap-marker>
+            
       </gmap-map>
    </div>
 </template>
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js"></script>
 <script>
+ 
 import Header from '../components/Header';
 export default {
    name: 'MapPkg',
@@ -22,11 +28,11 @@ export default {
    },
    computed: {
       getTitle() {
-         return `Mapa del paquete ${this.pkgDescription}`;    
+         return `Mapa del paquete ${ this.$route.params.pkg}`;    
       }, 
    },
    components: {
-      Header
+      Header 
    },
    methods: {
       geolocate () {
@@ -37,28 +43,31 @@ export default {
             };
          });
       },
-      addMarkers() {
-         const markerOrigin = {
-            lat: this.$route.params.latitude,
-            lng: this.$route.params.longitude
-         };
-         console.log( 'Origen', markerOrigin )
+      async addMarkers(e) {
+          var markerOrigin = Object
+          markerOrigin = {
+            lat:  e.coords.latitude,
+            lng:  e.coords.longitude
+            };
+           
          const markerDestination = {
-            lat: parseFloat(this.$route.params.ltd),
-            lng: parseFloat(this.$route.params.lgd)
+            lat: parseFloat(this.$route.params.latitud),
+            lng: parseFloat(this.$route.params.longitud)
          }
+          console.log('Origen', markerOrigin);
          console.log( 'Destino', markerDestination );
          this.markers.push( { position: markerOrigin }, { position: markerDestination } );
          this.center = markerOrigin;
-         console.log('Marcadores', this.markers);
+        
       },
    },
    mounted() {
       this.geolocate();
    },
-   created() {
-      this.pkgDescription = this.$route.params.pkgName;
-      this.addMarkers();
+   created() { 
+       
+       navigator.geolocation.getCurrentPosition(this.addMarkers)
+      ;
    },
 }
 </script>

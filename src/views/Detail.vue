@@ -1,6 +1,6 @@
 <template>
    <div>
-      <div v-if="!$route.params.pkgName">
+      <div v-if="$route.name != 'map'">
          <Header :title="getPaquete"></Header>
          <div class="detail--pkg" >
             <h2 class="is-block detail--title">Datos Paquete</h2>
@@ -169,11 +169,8 @@ export default {
       showMap() {
          this.$router.push( { name: 'map' , 
             params: { 
-               pkgName: this.detailPkg.description,
-               ltd: this.detailPkg.addressLatitude,
-               lgd: this.detailPkg.addressLongitude,
-               latitude: this.latitude,
-               longitude: this.longitude
+               latitud: this.detailPkg.addressLatitude,
+               longitud: this.detailPkg.addressLongitude,
             }
          })
       }

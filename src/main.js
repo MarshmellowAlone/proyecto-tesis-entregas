@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import routes from './routes';
 import axiosApi from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
+Vue.component('gmap-cluster', VueGoogleMaps.Cluster);
+import configPosition from './ConfigPosition'
+Vue.prototype.$position = configPosition 
 
 const axios = axiosApi.create({
   baseURL: `http://smpcourier.com/WS_SMPCOURIER/` 

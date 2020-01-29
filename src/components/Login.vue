@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+
 export default {
   name: 'Login',
   computed: {
@@ -57,7 +57,6 @@ export default {
       var vm = this
       vm.$axios.get( `login.php?login=${vm.user}&clave=${vm.password}` )
       .then( response => {
-        console.log( response )
         if ( response.data.error == 0 ) {
             localStorage.setItem( 'login' , true )
             vm.$router.push( { name: 'user' , params: { user: vm.user } } )

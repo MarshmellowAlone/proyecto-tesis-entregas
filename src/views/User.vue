@@ -73,19 +73,13 @@ export default {
          }, 1000 );
       },
       sendPosition() {
-         this.intervalTimer = setInterval( this.getPosition, 2000 )
+         // this.intervalTimer = setInterval( this.getPosition, 2000 )
       },
       stopPosition() {
          clearInterval( this.intervalTimer )
       },
-      getPosition() {
-         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition( this.displayPosition )
-            // console.log("aadada");
-         } else {
-            // console.log("no soporta geolocalizión");
-         }
-      },
+ 
+      
       displayPosition( location ) {
          this.longitude = location.coords.longitude;
          this.latitude = location.coords.latitude;
