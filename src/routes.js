@@ -1,6 +1,7 @@
 import Home from "./views/Home";
 import User from "./views/User";
 import Detail from "./views/Detail";
+import MapPkg from "./views/MapPkg";
 
 const router = [
    {
@@ -19,7 +20,14 @@ const router = [
          {
             path: 'detail/:pkg',
             name: 'detail',
-            component: Detail
+            component: Detail,
+            children: [
+               {
+                  path: 'map',
+                  name: 'map',
+                  component: MapPkg
+               }
+            ]
          }
       ]
    },

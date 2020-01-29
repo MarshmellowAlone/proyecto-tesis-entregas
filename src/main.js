@@ -1,13 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import App from './App.vue'
-import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
-import { library, config } from "@fortawesome/fontawesome-svg-core"
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-import routes from './routes'
-import axiosApi from 'axios'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import App from './App.vue';
+import Buefy from 'buefy';
+import 'buefy/dist/buefy.css';
+import { library, config } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import routes from './routes';
+import axiosApi from 'axios';
+import * as VueGoogleMaps from 'vue2-google-maps';
 
 const axios = axiosApi.create({
   baseURL: `http://smpcourier.com/WS_SMPCOURIER/` 
@@ -25,6 +26,12 @@ Vue.use( Buefy, {
   defaultIconComponent: 'vue-fontawesome',
   defaultIconPack: 'fas'
 })
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBXFV918UUvZhRCiJ2EXe5pZ0Ys_-IolKM",
+    libraries: "places" // necessary for places input
+  }
+});
 
 Vue.config.productionTip = false
 

@@ -1,49 +1,51 @@
 <template>
    <div>
-      <Header :title="getPaquete"></Header>
-      <div class="detail--pkg">
-         <h2 class="is-block detail--title">Datos Paquete</h2>
-         <span class="is-block is-size-7 detail--text">Paquete: {{ detailPkg.description }}</span>
-         <span class="is-flex detail--group">
-            <span class="is-size-7">Peso Kg: {{ setIntPeso }}</span>
-            <span class="is-size-7">Precio S/: {{ detailPkg.price }}</span>
-         </span>
-         <span class="is-flex detail--group">
-            <span class="is-size-7 detail--text">Paquete: {{ detailPkg.typePackage }}</span>
-            <span class="is-size-7 detail--text">Pago: {{ detailPkg.typePay }}</span>
-         </span>
-         
-         <h2 class="detail--title">Datos Remitente</h2>
-         <span class="is-size-7 is-block detail--text">{{ detailPkg.documentRemit }}</span>
-         <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameRemit }}</span>
-         <span class="is-flex detail--group">
-            <span class="is-size-7">Telf: {{ detailPkg.phoneRemit }}</span>
-            <span class="is-size-7">Celular: {{ detailPkg.celRemit }}</span>
-         </span>
-         <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailRemit }}</span>
+      <div v-if="!$route.params.pkgName">
+         <Header :title="getPaquete"></Header>
+         <div class="detail--pkg" >
+            <h2 class="is-block detail--title">Datos Paquete</h2>
+            <span class="is-block is-size-7 detail--text">Paquete: {{ detailPkg.description }}</span>
+            <span class="is-flex detail--group">
+               <span class="is-size-7">Peso Kg: {{ setIntPeso }}</span>
+               <span class="is-size-7">Precio S/: {{ detailPkg.price }}</span>
+            </span>
+            <span class="is-flex detail--group">
+               <span class="is-size-7 detail--text">Paquete: {{ detailPkg.typePackage }}</span>
+               <span class="is-size-7 detail--text">Pago: {{ detailPkg.typePay }}</span>
+            </span>
+            
+            <h2 class="detail--title">Datos Remitente</h2>
+            <span class="is-size-7 is-block detail--text">{{ detailPkg.documentRemit }}</span>
+            <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameRemit }}</span>
+            <span class="is-flex detail--group">
+               <span class="is-size-7">Telf: {{ detailPkg.phoneRemit }}</span>
+               <span class="is-size-7">Celular: {{ detailPkg.celRemit }}</span>
+            </span>
+            <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailRemit }}</span>
 
-         <h2 class="is-block detail--title">Datos Destinatario</h2>
-         <span class="is-size-7 is-block detail--text">{{ detailPkg.documentAddressee }}</span>
-         <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameAddressee }}</span>
-         <span class="is-flex detail--group">
-            <span class="is-size-7">Telf: {{ detailPkg.phoneAddressee }}</span>   
-            <span class="is-size-7">Celular: {{ detailPkg.celAddressee }}</span>
-         </span>
-         <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailAddressee }}</span>
+            <h2 class="is-block detail--title">Datos Destinatario</h2>
+            <span class="is-size-7 is-block detail--text">{{ detailPkg.documentAddressee }}</span>
+            <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameAddressee }}</span>
+            <span class="is-flex detail--group">
+               <span class="is-size-7">Telf: {{ detailPkg.phoneAddressee }}</span>   
+               <span class="is-size-7">Celular: {{ detailPkg.celAddressee }}</span>
+            </span>
+            <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailAddressee }}</span>
 
-         <h2 class="detail--title">Datos Entrega</h2>
-         <span class="is-size-7 is-block detail--text">Dirección: {{ detailPkg.deliveryAddress }}</span>
-         <span class="is-size-7 is-block detail--text">Ubigeo: {{ detailPkg.ubigeo }}</span>
-         <span class="is-flex detail--group">
-            <span class="is-size-7 is-block detail--text">Latitud: {{ detailPkg.addressLatitude }}</span>
-            <span class="is-size-7 is-block detail--text">Longitud: {{ detailPkg.addressLongitude }}</span>
-         </span>
-         <div class="is-flex btn--container">
-            <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="back()">Listado</b-button>
-            <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map">Ver Mapa</b-button>
+            <h2 class="detail--title">Datos Entrega</h2>
+            <span class="is-size-7 is-block detail--text">Dirección: {{ detailPkg.deliveryAddress }}</span>
+            <span class="is-size-7 is-block detail--text">Ubigeo: {{ detailPkg.ubigeo }}</span>
+            <span class="is-flex detail--group">
+               <span class="is-size-7 is-block detail--text">Latitud: {{ detailPkg.addressLatitude }}</span>
+               <span class="is-size-7 is-block detail--text">Longitud: {{ detailPkg.addressLongitude }}</span>
+            </span>
+            <div class="is-flex btn--container">
+               <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="back()">Listado</b-button>
+               <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="showMap()">Ver Mapa</b-button>
+            </div>
+            <button v-show="isActiveBtnStartDelivery" class="button is-fullwidth is-outlined btn--start--delivery" @click="startDelivery()">Iniciar Entrega</button>
+            <button v-show="isActiveBtnEndDelivery" class="button is-fullwidth is-outlined btn--end--delivery" @click="endDelivery()">Terminar Entrega</button>
          </div>
-         <button v-show="isActiveBtnStartDelivery" class="button is-fullwidth is-outlined btn--start--delivery" @click="startDelivery()">Iniciar Entrega</button>
-         <button v-show="isActiveBtnEndDelivery" class="button is-fullwidth is-outlined btn--end--delivery" @click="endDelivery()">Terminar Entrega</button>
       </div>
       <b-modal :active.sync="isComponentModalActive"
          has-modal-card
@@ -65,6 +67,7 @@
             </div>
          </form>
       </b-modal>
+      <router-view></router-view>
    </div>
 </template>
 
@@ -80,6 +83,7 @@ export default {
          isActiveBtnStartDelivery: true,
          isComponentModalActive: false,
          detailPkg: {
+            id: null,
             description: null,
             peso: null,
             price: null,
@@ -100,12 +104,17 @@ export default {
             addressLatitude: null,
             addressLongitude: null
          },
+         latitude: 0,
+         longitude: 0
       }
    },
    created() {
+      this.latitude = this.$route.params.ltd;
+      this.longitude = this.$route.params.lgd;
       this.pkg = this.$route.params.pkg;
       this.$axios.get( `smp.php?paquete_id=${this.$route.params.pkg}` )
       .then( response => {
+         this.detailPkg.id = response.data[0].id;
          this.detailPkg.description = response.data[0].descripcion;
          this.detailPkg.peso = response.data[0].peso;
          this.detailPkg.price = response.data[0].precio;
@@ -125,7 +134,6 @@ export default {
          this.detailPkg.ubigeo = response.data[0].ubigeo;
          this.detailPkg.addressLatitude = response.data[0].latitud_direccion;
          this.detailPkg.addressLongitude = response.data[0].longitud_direccion;
-         console.log( 'detailPkg', this.detailPkg );
       })
    },
    computed: {
@@ -134,19 +142,40 @@ export default {
       },
       setIntPeso() {
          return parseInt( this.detailPkg.peso );
-      }
+      },
    },
    methods: {
       back() {
          var vm = this
          vm.$router.push({ name: 'user' })
       },
+      getDateNow() {
+         const today = new Date();
+         return `${ today.getFullYear() }-${ ( today.getMonth() + 1 ) }-${ today.getDate() } 
+                  ${ today.getHours() }:${ today.getMinutes() }:${ today.getSeconds() }`; 
+      },
       startDelivery() {
          this.isActiveBtnStartDelivery = false;
          this.isActiveBtnEndDelivery = true;
+
+         this.$axios.post( `smp.php?paquete_id=${this.detailPkg.id}&fecha_inicio=${this.getDateNow()}&latitud_inicio=${this.latitude}&longitud_inicio=${this.longitude}`)
+         .then( response => {
+            console.log("respuesta", response.data);
+         });
       },
       endDelivery() {
          this.isComponentModalActive = true
+      },
+      showMap() {
+         this.$router.push( { name: 'map' , 
+            params: { 
+               pkgName: this.detailPkg.description,
+               ltd: this.detailPkg.addressLatitude,
+               lgd: this.detailPkg.addressLongitude,
+               latitude: this.latitude,
+               longitude: this.longitude
+            }
+         })
       }
    },
    components: {
