@@ -1,7 +1,7 @@
 <template>
   <div class="is-flex login">
     <picture class="logo">
-      <img src="@/assets/images/logo.png" alt />
+      <img src="@/assets/images/xxhdpi.png" alt />
     </picture>
     <section>
       <form @submit.prevent="login()">
