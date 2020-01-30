@@ -8,15 +8,18 @@
                      <b-icon icon="user-tie"></b-icon>
                      <span class="is-size-6 detail--distributor">Repartidor: {{ getDistributor }}</span>
                   </div>   
-                  <div class="list--item" v-for="(item, index) in dataPkg" :key="index">
-                     <router-link :to="{ name: 'detail', params: { pkg: item.id, ltd: latitude, lgd: longitude } }">
+                  <div v-show="pgkState.pending" class="list--item" v-for="(item, index) in dataPkg" :key="index">
+                     <router-link 
+                        :to="{ name: 'detail', 
+                           params: { pkg: item.id, ltd: latitude, lgd: longitude, user: $route.params.user  } 
+                        }">
                         <Item :code="item.descripcion" :address="item.direccion_entrega" />
                      </router-link>
                   </div>
                </div>
                <div class="is-flex btn--position">
-                  <button class="has-background-success has-text-white is-size-7 btn send--position" @click="sendPosition(); isActiveGPS();">Enviar Posición</button>
-                  <button class="has-background-info has-text-white is-size-7 stop--position" @click="stopPosition()">No Enviar Posición</button>
+                  <button v-show="isActiveSendPosition" class="has-background-success has-text-white is-size-7 btn send--position" @click="sendPosition(); isActiveGPS();">Enviar Posición</button>
+                  <button v-show="isActiveStopPosition" class="has-background-info has-text-white is-size-7 stop--position" @click="stopPosition()">No Enviar Posición</button>
                </div>
             <b-notification v-show="stateNotification" auto-close :duration="2000" class="has-background-danger has-text-white has-text-weight-bold welcome"   :closable="false">
                Bienvenido gracias {{ distributor }} por preferirnos
@@ -40,11 +43,20 @@ export default {
       return {
          distributor: null,
          stateNotification: true,
+         isActiveSendPosition: true,
+         isActiveStopPosition: false,
          dataPkg: [],
          intervalTimer: null,
          stateGPS: false,
          latitude: 0,
-         longitude: 0
+         longitude: 0,
+         pgkState: {
+            pending: true,
+            delivered: false,
+            undelivered: false,
+            rejected: false
+         },
+         statePgk: 'Pendiente'
       }
    },
    created() {
@@ -73,13 +85,23 @@ export default {
          }, 1000 );
       },
       sendPosition() {
-         // this.intervalTimer = setInterval( this.getPosition, 2000 )
+         this.intervalTimer = setInterval( this.getPosition, 2000 )
+         this.isActiveSendPosition = false;
+         this.isActiveStopPosition = true;
       },
       stopPosition() {
-         clearInterval( this.intervalTimer )
+         clearInterval( this.intervalTimer );
+         this.isActiveSendPosition = true;
+         this.isActiveStopPosition = false;
       },
- 
-      
+      getPosition() {
+         if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition( this.displayPosition )
+            // console.log("aadada");
+         } else {
+            // console.log("no soporta geolocalizión");
+         }
+      },
       displayPosition( location ) {
          this.longitude = location.coords.longitude;
          this.latitude = location.coords.latitude;
@@ -134,8 +156,12 @@ export default {
 .btn--position {
    justify-content: flex-end;
 }
+.send--position,
 .stop--position {
    width: 150px;
+   padding: .5rem;
+}
+.stop--position {
    margin-left: .5rem;
 }
 </style>

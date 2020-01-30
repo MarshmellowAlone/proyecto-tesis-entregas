@@ -2,18 +2,13 @@
    <div>
       <Header :title="getTitle"></Header>
       <gmap-map 
-         :center="center" :zoom="12" style="width:100%;  height: 400px;">
-          <div slot="visible">
-         
-      </div>
+         :center="center" :zoom="14" style="width:100%;  height: 400px;" ref="map">
          <gmap-marker v-for="(m,index) in markers" :key="index" :position="m.position"
             @click="center = m.position"
          ></gmap-marker>
-            
       </gmap-map>
    </div>
 </template>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js"></script>
 <script>
  
 import Header from '../components/Header';
@@ -23,13 +18,16 @@ export default {
       return {
          pkgDescription: null,
          center: { lat: 45.508, lng: -73.587 },
-         markers: []
+         markers: [],
+         start: null,
+         end: null,
       }
    },
    computed: {
       getTitle() {
          return `Mapa del paquete ${ this.$route.params.pkg}`;    
       }, 
+      
    },
    components: {
       Header 
@@ -54,8 +52,8 @@ export default {
             lat: parseFloat(this.$route.params.latitud),
             lng: parseFloat(this.$route.params.longitud)
          }
-          console.log('Origen', markerOrigin);
-         console.log( 'Destino', markerDestination );
+         // console.log('Origen', markerOrigin);
+         // console.log( 'Destino', markerDestination );
          this.markers.push( { position: markerOrigin }, { position: markerDestination } );
          this.center = markerOrigin;
         
@@ -65,9 +63,7 @@ export default {
       this.geolocate();
    },
    created() { 
-       
-       navigator.geolocation.getCurrentPosition(this.addMarkers)
-      ;
+       navigator.geolocation.getCurrentPosition( this.addMarkers );
    },
 }
 </script>

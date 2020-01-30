@@ -3,42 +3,47 @@
       <div v-if="$route.name != 'map'">
          <Header :title="getPaquete"></Header>
          <div class="detail--pkg" >
-            <h2 class="is-block detail--title">Datos Paquete</h2>
-            <span class="is-block is-size-7 detail--text">Paquete: {{ detailPkg.description }}</span>
-            <span class="is-flex detail--group">
-               <span class="is-size-7">Peso Kg: {{ setIntPeso }}</span>
-               <span class="is-size-7">Precio S/: {{ detailPkg.price }}</span>
-            </span>
-            <span class="is-flex detail--group">
-               <span class="is-size-7 detail--text">Paquete: {{ detailPkg.typePackage }}</span>
-               <span class="is-size-7 detail--text">Pago: {{ detailPkg.typePay }}</span>
-            </span>
-            
-            <h2 class="detail--title">Datos Remitente</h2>
-            <span class="is-size-7 is-block detail--text">{{ detailPkg.documentRemit }}</span>
-            <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameRemit }}</span>
-            <span class="is-flex detail--group">
-               <span class="is-size-7">Telf: {{ detailPkg.phoneRemit }}</span>
-               <span class="is-size-7">Celular: {{ detailPkg.celRemit }}</span>
-            </span>
-            <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailRemit }}</span>
-
-            <h2 class="is-block detail--title">Datos Destinatario</h2>
-            <span class="is-size-7 is-block detail--text">{{ detailPkg.documentAddressee }}</span>
-            <span class="is-size-7 is-block detail--text">Nombre: {{ detailPkg.nameAddressee }}</span>
-            <span class="is-flex detail--group">
-               <span class="is-size-7">Telf: {{ detailPkg.phoneAddressee }}</span>   
-               <span class="is-size-7">Celular: {{ detailPkg.celAddressee }}</span>
-            </span>
-            <span class="is-size-7 is-block detail--text">Email: {{ detailPkg.emailAddressee }}</span>
-
-            <h2 class="detail--title">Datos Entrega</h2>
-            <span class="is-size-7 is-block detail--text">Dirección: {{ detailPkg.deliveryAddress }}</span>
-            <span class="is-size-7 is-block detail--text">Ubigeo: {{ detailPkg.ubigeo }}</span>
-            <span class="is-flex detail--group">
-               <span class="is-size-7 is-block detail--text">Latitud: {{ detailPkg.addressLatitude }}</span>
-               <span class="is-size-7 is-block detail--text">Longitud: {{ detailPkg.addressLongitude }}</span>
-            </span>
+            <div class="detail--item">
+               <h2 class="is-block detail--title">Detalle Paquete</h2>
+               <span class="is-block is-size-6 detail--text">Paquete: {{ detailPkg.description }}</span>
+               <span class="is-flex detail--group">
+                  <span class="is-size-6">Peso Kg: {{ setIntPeso }}</span>
+                  <span class="is-size-6">Precio S/: {{ detailPkg.price }}</span>
+               </span>
+               <span class="is-flex detail--group">
+                  <span class="is-size-6 detail--text">Paquete: {{ detailPkg.typePackage }}</span>
+                  <span class="is-size-6 detail--text">Pago: {{ detailPkg.typePay }}</span>
+               </span>
+            </div>
+            <div class="detail--item">
+               <h2 class="detail--title">Detalle Remitente</h2>
+               <span class="is-size-6 is-block detail--text">{{ detailPkg.documentRemit }}</span>
+               <span class="is-size-6 is-block detail--text">Nombre: {{ detailPkg.nameRemit }}</span>
+               <span class="is-flex detail--group">
+                  <span class="is-size-6">Teléfono: {{ detailPkg.phoneRemit }}</span>
+                  <span class="is-size-6">Celular: {{ detailPkg.celRemit }}</span>
+               </span>
+               <span class="is-size-6 is-block detail--text">Email: {{ detailPkg.emailRemit }}</span>
+            </div>
+            <div class="detail--item">
+               <h2 class="is-block detail--title">Detalle Destinatario</h2>
+               <span class="is-size-6 is-block detail--text">{{ detailPkg.documentAddressee }}</span>
+               <span class="is-size-6 is-block detail--text">Nombre: {{ detailPkg.nameAddressee }}</span>
+               <span class="is-flex detail--group">
+                  <span class="is-size-6">Teléfono: {{ detailPkg.phoneAddressee }}</span>   
+                  <span class="is-size-6">Celular: {{ detailPkg.celAddressee }}</span>
+               </span>
+               <span class="is-size-6 is-block detail--text">Email: {{ detailPkg.emailAddressee }}</span>
+            </div>
+            <div class="detail--item">
+               <h2 class="detail--title">Detalle Entrega</h2>
+               <span class="is-size-6 is-block detail--text">Dirección: {{ detailPkg.deliveryAddress }}</span>
+               <span class="is-size-6 is-block detail--text">Ubigeo: {{ detailPkg.ubigeo }}</span>
+               <span class="is-flex detail--group">
+                  <span class="is-size-6 is-block detail--text">Latitud: {{ formatLatitude }}</span>
+                  <span class="is-size-6 is-block detail--text">Longitud: {{ formatLongitude }}</span>
+               </span>
+            </div>
             <div class="is-flex btn--container">
                <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="back()">Listado</b-button>
                <b-button type="is-success" class="button is-fullwidth is-outlined btn--show--map" @click="showMap()">Ver Mapa</b-button>
@@ -53,19 +58,24 @@
          aria-role="dialog"
          aria-modal
       >
-         <form action="">
-            <div class="modal-card" style="width: auto">
-               <header class="modal-card-head">
-                  <p class="modal-card-title">Estado Paquete</p>
-               </header>
-               <section class="modal-card-body">
-                  <Delivery />
-               </section>
-               <footer class="is-flex modal-card-foot footer--modal">
-                  <button class="button is-primary">Enviar</button>
-               </footer>
-            </div>
-         </form>
+         <div class="modal-card" style="width: auto">
+            <header class="modal-card-head">
+               <p class="modal-card-title">Estado Paquete</p>
+            </header>
+            <section class="modal-card-body">
+               <b-select placeholder="Seleccionar estado" v-model="selected">
+                  <option 
+                     v-for="(option, index ) in stateOptions"
+                     :value="option.description"
+                     :key="index">
+                     {{ option.description }}
+                  </option>
+               </b-select>
+            </section>
+            <footer class="is-flex modal-card-foot footer--modal">
+               <button class="button is-primary" @click="savedState()">Enviar</button>
+            </footer>
+         </div>
       </b-modal>
       <router-view></router-view>
    </div>
@@ -73,7 +83,6 @@
 
 <script>
 import Header from '../components/Header';
-import Delivery from '@/components/Delivery.vue'
 export default {
    name: 'detail',
    data() {
@@ -105,7 +114,13 @@ export default {
             addressLongitude: null
          },
          latitude: 0,
-         longitude: 0
+         longitude: 0,
+         stateOptions: [
+            { id: 1, description: 'Entregado' },
+            { id: 2, description: 'Sin entregar' },
+            { id: 1, description: 'Rechazado' }
+         ],
+         selected: 'Sin entregar'
       }
    },
    created() {
@@ -143,6 +158,12 @@ export default {
       setIntPeso() {
          return parseInt( this.detailPkg.peso );
       },
+      formatLatitude() {
+         return parseFloat( this.detailPkg.addressLatitude ).toFixed( 5 )
+      },
+      formatLongitude() {
+         return parseFloat( this.detailPkg.addressLongitude ).toFixed( 5 )
+      }
    },
    methods: {
       back() {
@@ -173,21 +194,33 @@ export default {
                longitud: this.detailPkg.addressLongitude,
             }
          })
-      }
+      },
+      savedState() {
+         this.$router.push( { name: 'user', params: { statePkg: this.selected } } );
+         console.log( this.selected );
+      },
    },
    components: {
       Header,
-      Delivery
    },
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400i&display=swap');
+
 .detail--pkg {
    padding: 1rem;
 }
+.detail--item{
+   margin-bottom: 1rem;  
+}
 .detail--group {
    justify-content: space-between;
+}
+.detail--title {
+   font-family: 'Open Sans', sans-serif;
+   color: #c0392b;
 }
 .btn--start--delivery {
    color: aliceblue;

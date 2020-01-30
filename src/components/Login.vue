@@ -44,7 +44,7 @@ export default {
       isLoading: false,
       isFullPage: true,
       user: '',
-      password: '123456',
+      password: '',
       error: 1
     }
   },

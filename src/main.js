@@ -9,8 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import routes from './routes';
 import axiosApi from 'axios';
 import * as VueGoogleMaps from 'vue2-google-maps';
-Vue.component('gmap-cluster', VueGoogleMaps.Cluster);
 import configPosition from './ConfigPosition'
+
+Vue.component('gmap-cluster', VueGoogleMaps.Cluster);
 Vue.prototype.$position = configPosition 
 
 const axios = axiosApi.create({
@@ -18,7 +19,6 @@ const axios = axiosApi.create({
 });
 
 Vue.prototype.$axios = axios
- 
 
 config.autoAddCss = false;
 library.add( fas );
