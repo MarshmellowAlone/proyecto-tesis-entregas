@@ -8,7 +8,7 @@
                      <b-icon icon="user-tie"></b-icon>
                      <span class="is-size-6 detail--distributor">Repartidor: {{ getDistributor }}</span>
                   </div>   
-                  <div v-show="pgkState.pending" class="list--item" v-for="(item, index) in dataPkg" :key="index">
+                  <div class="list--item" v-for="(item, index) in dataPkg" :key="index">
                      <router-link 
                         :to="{ name: 'detail', 
                            params: { pkg: item.id, ltd: latitude, lgd: longitude, user: $route.params.user  } 
@@ -50,13 +50,6 @@ export default {
          stateGPS: false,
          latitude: 0,
          longitude: 0,
-         pgkState: {
-            pending: true,
-            delivered: false,
-            undelivered: false,
-            rejected: false
-         },
-         statePgk: 'Pendiente'
       }
    },
    created() {

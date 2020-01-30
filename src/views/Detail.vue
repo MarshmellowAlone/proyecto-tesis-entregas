@@ -196,8 +196,7 @@ export default {
          })
       },
       savedState() {
-         this.$router.push( { name: 'user', params: { statePkg: this.selected } } );
-         console.log( this.selected );
+         this.$router.push( { name: 'user',  } );
       },
    },
    components: {
