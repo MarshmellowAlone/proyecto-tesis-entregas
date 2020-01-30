@@ -11,15 +11,15 @@
                   <div class="list--item" v-for="(item, index) in dataPkg" :key="index">
                      <router-link 
                         :to="{ name: 'detail', 
-                           params: { pkg: item.id, ltd: latitude, lgd: longitude, user: $route.params.user  } 
+                           params: { pkg: item.id, user: $route.params.user  } 
                         }">
                         <Item :code="item.descripcion" :address="item.direccion_entrega" />
                      </router-link>
                   </div>
                </div>
                <div class="is-flex btn--position">
-                  <button v-show="isActiveSendPosition" class="has-background-success has-text-white is-size-7 btn send--position" @click="sendPosition(); isActiveGPS();">Enviar Posición</button>
-                  <button v-show="isActiveStopPosition" class="has-background-info has-text-white is-size-7 stop--position" @click="stopPosition()">No Enviar Posición</button>
+                  <button v-show="getStateActiveSendPosition" class="has-background-success has-text-white is-size-7 btn send--position" @click="sendPosition(); isActiveGPS();">Enviar Posición</button>
+                  <button v-show="getStateActiveStopPosition" class="has-background-info has-text-white is-size-7 stop--position" @click="stopPosition()">No Enviar Posición</button>
                </div>
             <b-notification v-show="stateNotification" auto-close :duration="2000" class="has-background-danger has-text-white has-text-weight-bold welcome"   :closable="false">
                Bienvenido gracias {{ distributor }} por preferirnos
@@ -37,6 +37,7 @@
 import Header from '../components/Header';
 import Item from '../components/PackageItem';
 import Axios from 'axios';
+
 export default {
    name: 'user',
    data() {
@@ -50,9 +51,14 @@ export default {
          stateGPS: false,
          latitude: 0,
          longitude: 0,
+         packageId: 0
       }
    },
    created() {
+      if( localStorage.getItem('pkgID') ) {
+         this.isActiveSendPosition = false;
+         this.isActiveStopPosition = true;
+      }
       this.distributor = this.$route.params.user;
       setTimeout( () => {
          this.stateNotification = false;
@@ -60,9 +66,16 @@ export default {
       this.$axios.get( `smp.php?login=${this.$route.params.user}` )
       .then( response => {
          this.dataPkg = response.data;
+         this.packageId = response.data[0].id;
       })
    },
    computed: {
+      getStateActiveSendPosition() {
+         return this.isActiveSendPosition && !localStorage.getItem('pkgID');
+      },
+      getStateActiveStopPosition() {
+         return ( this.isActiveStopPosition || localStorage.getItem('pkgID') );
+      },
       getDistributor() {
          return this.distributor.toUpperCase();
       },
@@ -77,29 +90,18 @@ export default {
             this.stateGPS = false
          }, 1000 );
       },
-      sendPosition() {
-         this.intervalTimer = setInterval( this.getPosition, 2000 )
-         this.isActiveSendPosition = false;
-         this.isActiveStopPosition = true;
+      sendPosition( packageId ) {
+         this.isActiveSendPosition = !this.isActiveSendPosition;
+         this.isActiveStopPosition = !this.isActiveStopPosition;
+         localStorage.setItem('pkgID', this.packageId);
+         this.$position.sendPosition();
       },
       stopPosition() {
-         clearInterval( this.intervalTimer );
-         this.isActiveSendPosition = true;
-         this.isActiveStopPosition = false;
+         this.$position.stopPosition();
+         localStorage.removeItem( 'pkgID' )
+         this.isActiveSendPosition = !this.isActiveSendPosition;
+         this.isActiveStopPosition = !this.isActiveStopPosition;
       },
-      getPosition() {
-         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition( this.displayPosition )
-            // console.log("aadada");
-         } else {
-            // console.log("no soporta geolocalizión");
-         }
-      },
-      displayPosition( location ) {
-         this.longitude = location.coords.longitude;
-         this.latitude = location.coords.latitude;
-         console.log(`Longitud: ${this.longitude} - Latitud: ${this.latitude}`);
-      }
    },
    components: {
       Header,

@@ -19,52 +19,60 @@ export default {
          pkgDescription: null,
          center: { lat: 45.508, lng: -73.587 },
          markers: [],
-         start: null,
-         end: null,
+         pkgId: this.$route.params.pkgId,
+         markerOrigin: { lat: 0, lng: 0 },
+         markerDestination: { lat: 0, lng: 0 },
+         intervalTimer: null
       }
    },
    computed: {
       getTitle() {
          return `Mapa del paquete ${ this.$route.params.pkg}`;    
-      }, 
-      
+      },
    },
    components: {
       Header 
    },
    methods: {
-      geolocate () {
-         navigator.geolocation.getCurrentPosition( position => {
-            this.center = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-            };
-         });
+      displayMap() {
+         this.intervalTimer = setInterval( this.getPosition, 2000);
       },
-      async addMarkers(e) {
-          var markerOrigin = Object
-          markerOrigin = {
-            lat:  e.coords.latitude,
-            lng:  e.coords.longitude
-            };
-           
-         const markerDestination = {
-            lat: parseFloat(this.$route.params.latitud),
-            lng: parseFloat(this.$route.params.longitud)
+      stopStartMap() {
+         clearInterval( this.intervalTimer );
+      },
+      getPosition() {
+         this.markers = [];
+         if ( "geolocation" in navigator ) {
+           navigator.geolocation.getCurrentPosition( this.displayPosition )
          }
-         // console.log('Origen', markerOrigin);
-         // console.log( 'Destino', markerDestination );
-         this.markers.push( { position: markerOrigin }, { position: markerDestination } );
-         this.center = markerOrigin;
-        
+      },
+      displayPosition( location ) {
+        const longitude = location.coords.longitude;
+        const latitude = location.coords.latitude;
+        this.markerOrigin = {
+           lat: latitude,
+           lng: longitude
+        },
+        console.log('punto inicio', this.markerOrigin);
+        this.markerDestination = {
+           lat: parseFloat( this.$route.params.latitud ),
+           lng: parseFloat( this.$route.params.longitud )
+        }
+        this.markers.push( { position: this.markerOrigin }, { position: this.markerDestination } );
+        this.center = this.markerOrigin;
+        console.log('marcadores', this.markers);
       },
    },
-   mounted() {
-      this.geolocate();
+   created() {
+      localStorage.setItem('map', true);
+      if (localStorage.getItem('map')) {
+         this.displayMap();
+      }
    },
-   created() { 
-       navigator.geolocation.getCurrentPosition( this.addMarkers );
-   },
+   destroyed() {
+      localStorage.setItem('map', false);
+      this.stopStartMap();
+   }
 }
 </script>
 

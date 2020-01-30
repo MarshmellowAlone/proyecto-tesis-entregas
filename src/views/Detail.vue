@@ -87,7 +87,6 @@ export default {
    name: 'detail',
    data() {
       return {
-         pkg: 0,
          isActiveBtnEndDelivery: false,
          isActiveBtnStartDelivery: true,
          isComponentModalActive: false,
@@ -124,9 +123,7 @@ export default {
       }
    },
    created() {
-      this.latitude = this.$route.params.ltd;
-      this.longitude = this.$route.params.lgd;
-      this.pkg = this.$route.params.pkg;
+      console.log( 'Latitude', localStorage.getItem('latitude') );
       this.$axios.get( `smp.php?paquete_id=${this.$route.params.pkg}` )
       .then( response => {
          this.detailPkg.id = response.data[0].id;
@@ -153,7 +150,7 @@ export default {
    },
    computed: {
       getPaquete() {
-         return `Detalle del paquete ${this.pkg}`
+         return `Detalle del paquete ${this.detailPkg.id}`
       },
       setIntPeso() {
          return parseInt( this.detailPkg.peso );
@@ -170,19 +167,9 @@ export default {
          var vm = this
          vm.$router.push({ name: 'user' })
       },
-      getDateNow() {
-         const today = new Date();
-         return `${ today.getFullYear() }-${ ( today.getMonth() + 1 ) }-${ today.getDate() } 
-                  ${ today.getHours() }:${ today.getMinutes() }:${ today.getSeconds() }`; 
-      },
       startDelivery() {
          this.isActiveBtnStartDelivery = false;
          this.isActiveBtnEndDelivery = true;
-
-         this.$axios.post( `smp.php?paquete_id=${this.detailPkg.id}&fecha_inicio=${this.getDateNow()}&latitud_inicio=${this.latitude}&longitud_inicio=${this.longitude}`)
-         .then( response => {
-            console.log("respuesta", response.data);
-         });
       },
       endDelivery() {
          this.isComponentModalActive = true
@@ -192,6 +179,7 @@ export default {
             params: { 
                latitud: this.detailPkg.addressLatitude,
                longitud: this.detailPkg.addressLongitude,
+               pkgId: localStorage.getItem('pkgID')
             }
          })
       },

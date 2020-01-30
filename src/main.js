@@ -14,6 +14,9 @@ import configPosition from './ConfigPosition'
 Vue.component('gmap-cluster', VueGoogleMaps.Cluster);
 Vue.prototype.$position = configPosition 
 
+configPosition.existDataLocalSotare();
+
+
 const axios = axiosApi.create({
   baseURL: `http://smpcourier.com/WS_SMPCOURIER/` 
 });

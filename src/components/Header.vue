@@ -28,6 +28,8 @@ export default {
       backDetail() {
          var vm = this;
          vm.$router.push({ name: 'detail' });
+         if( vm.$router.name != 'map' )
+         localStorage.setItem( 'map', false );
       },
       logout() {
          var vm = this;
@@ -35,7 +37,6 @@ export default {
          localStorage.removeItem( 'login' );
       }
    },
-   
 }
 </script>
 
