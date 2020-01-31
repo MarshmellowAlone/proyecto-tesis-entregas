@@ -123,7 +123,7 @@ export default {
       }
    },
    created() {
-      console.log( 'Latitude', localStorage.getItem('latitude') );
+      console.log( 'Latitude', window.localStorage.getItem('latitude') );
       this.$axios.get( `smp.php?paquete_id=${this.$route.params.pkg}` )
       .then( response => {
          this.detailPkg.id = response.data[0].id;
@@ -179,7 +179,7 @@ export default {
             params: { 
                latitud: this.detailPkg.addressLatitude,
                longitud: this.detailPkg.addressLongitude,
-               pkgId: localStorage.getItem('pkgID')
+               pkgId: window.localStorage.getItem('pkgID')
             }
          })
       },

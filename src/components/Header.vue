@@ -29,12 +29,12 @@ export default {
          var vm = this;
          vm.$router.push({ name: 'detail' });
          if( vm.$router.name != 'map' )
-         localStorage.setItem( 'map', false );
+         window.localStorage.setItem( 'map', false );
       },
       logout() {
          var vm = this;
          vm.$router.push({ name: 'home' });
-         localStorage.removeItem( 'login' );
+         window.localStorage.removeItem( 'login' );
       }
    },
 }

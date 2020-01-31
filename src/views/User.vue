@@ -55,7 +55,7 @@ export default {
       }
    },
    created() {
-      if( localStorage.getItem('pkgID') ) {
+      if( window.localStorage.getItem('pkgID') ) {
          this.isActiveSendPosition = false;
          this.isActiveStopPosition = true;
       }
@@ -71,10 +71,10 @@ export default {
    },
    computed: {
       getStateActiveSendPosition() {
-         return this.isActiveSendPosition && !localStorage.getItem('pkgID');
+         return this.isActiveSendPosition && !window.localStorage.getItem('pkgID');
       },
       getStateActiveStopPosition() {
-         return ( this.isActiveStopPosition || localStorage.getItem('pkgID') );
+         return ( this.isActiveStopPosition || window.localStorage.getItem('pkgID') );
       },
       getDistributor() {
          return this.distributor.toUpperCase();
@@ -93,12 +93,12 @@ export default {
       sendPosition( packageId ) {
          this.isActiveSendPosition = !this.isActiveSendPosition;
          this.isActiveStopPosition = !this.isActiveStopPosition;
-         localStorage.setItem('pkgID', this.packageId);
+         window.localStorage.setItem('pkgID', this.packageId);
          this.$position.sendPosition();
       },
       stopPosition() {
          this.$position.stopPosition();
-         localStorage.removeItem( 'pkgID' )
+         window.localStorage.removeItem( 'pkgID' )
          this.isActiveSendPosition = !this.isActiveSendPosition;
          this.isActiveStopPosition = !this.isActiveStopPosition;
       },

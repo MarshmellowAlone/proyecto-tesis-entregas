@@ -15,21 +15,26 @@ const Position = {
     },
     getPosition() {
         if ( "geolocation" in navigator ) {
-           navigator.geolocation.getCurrentPosition( Position.displayPosition )
+           navigator.geolocation.getCurrentPosition( this.displayPosition, this.onError, { enableHighAccuracy:true })
         }
     },
+
+    onError(error){
+        alert('Código de error: '    + error.code    + '\n' +   'Mensaje: ' + error.message + '\n');
+     },
+
     displayPosition( location ) {
         const longitude = location.coords.longitude;
         const latitude = location.coords.latitude;
-        localStorage.setItem('latitude', latitude);
-        localStorage.setItem('longitude', longitude);
-        axios.post(`http://smpcourier.com/WS_SMPCOURIER/smp.php?paquete_id=${localStorage.getItem('pkgID')}&fecha_inicio=${Position.getDateNow()}&latitud_inicio=${localStorage.getItem('latitude')}&longitud_inicio=${localStorage.getItem('longitude')}`)
+        window.localStorage.setItem('latitude', latitude);
+        window.localStorage.setItem('longitude', longitude);
+        axios.post(`http://smpcourier.com/WS_SMPCOURIER/smp.php?paquete_id=${window.localStorage.getItem('pkgID')}&fecha_inicio=${Position.getDateNow()}&latitud_inicio=${window.localStorage.getItem('latitude')}&longitud_inicio=${window.localStorage.getItem('longitude')}`)
         .then( response => {
             console.log("respuesta", response.data);
         });
     },
     existDataLocalSotare() {
-        const pkgID = localStorage.getItem('pkgID');
+        const pkgID = window.localStorage.getItem('pkgID');
         if( pkgID ) {
             Position.sendPosition();
         } else {

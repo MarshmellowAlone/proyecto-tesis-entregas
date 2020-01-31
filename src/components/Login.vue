@@ -58,10 +58,10 @@ export default {
       vm.$axios.get( `login.php?login=${vm.user}&clave=${vm.password}` )
       .then( response => {
         if ( response.data.error == 0 ) {
-            localStorage.setItem( 'login' , true )
+            window.localStorage.setItem( 'login' , true )
             vm.$router.push( { name: 'user' , params: { user: vm.user } } )
         } else {
-          localStorage.removeItem( 'login' )
+          window.localStorage.removeItem( 'login' )
           this.isLoading = false
           vm.$buefy.notification.open( {
             duration: 600,

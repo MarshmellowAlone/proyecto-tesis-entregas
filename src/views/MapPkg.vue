@@ -40,10 +40,15 @@ export default {
       stopStartMap() {
          clearInterval( this.intervalTimer );
       },
+
+      onError(error){
+         alert('Código de error: '    + error.code    + '\n' +   'Mensaje: ' + error.message + '\n');
+      },
       getPosition() {
          this.markers = [];
          if ( "geolocation" in navigator ) {
-           navigator.geolocation.getCurrentPosition( this.displayPosition )
+            navigator.geolocation.getCurrentPosition( this.displayPosition, this.onError, { enableHighAccuracy:true })
+ 
          }
       },
       displayPosition( location ) {
@@ -64,13 +69,13 @@ export default {
       },
    },
    created() {
-      localStorage.setItem('map', true);
-      if (localStorage.getItem('map')) {
+      window.localStorage.setItem('map', true);
+      if (window.localStorage.getItem('map')) {
          this.displayMap();
       }
    },
    destroyed() {
-      localStorage.setItem('map', false);
+      window.localStorage.setItem('map', false);
       this.stopStartMap();
    }
 }
