@@ -55,6 +55,7 @@ export default {
       }
    },
    created() {
+      console.log('user');
       if( window.localStorage.getItem('pkgID') ) {
          this.isActiveSendPosition = false;
          this.isActiveStopPosition = true;

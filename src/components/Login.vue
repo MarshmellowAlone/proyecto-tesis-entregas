@@ -58,7 +58,8 @@ export default {
       vm.$axios.get( `login.php?login=${vm.user}&clave=${vm.password}` )
       .then( response => {
         if ( response.data.error == 0 ) {
-            window.localStorage.setItem( 'login' , true )
+            window.localStorage.setItem( 'login', true );
+            window.localStorage.setItem( 'user', vm.user );
             vm.$router.push( { name: 'user' , params: { user: vm.user } } )
         } else {
           window.localStorage.removeItem( 'login' )

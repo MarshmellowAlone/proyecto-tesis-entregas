@@ -45,8 +45,7 @@ Vue.config.productionTip = false
  
 const router = new VueRouter({
   routes,
-  base: process.env.BASE_URL,
-  mode: 'history'
+  base: process.env.BASE_URL
 })
 
 
@@ -62,13 +61,13 @@ router.beforeEach((to, from, next) => {
 })
 
 
-router.beforeResolve((to, from, next) => {
-  // If this isn't an initial page load.
+// router.beforeResolve((to, from, next) => {
+//   // If this isn't an initial page load.
       
-      // Start the route progress bar.
+//       // Start the route progress bar.
      
-       next()
-})
+//        next()
+// })
 new Vue({
   render: h => h(App),
   router 

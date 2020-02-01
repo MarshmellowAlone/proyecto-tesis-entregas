@@ -22,18 +22,22 @@ export default {
    name: 'Header',
    methods: {
       backUser() {
+         console.log('back-user');
          var vm = this;
-         vm.$router.push({ name: 'user' });
+         vm.$router.push( { name: 'user', params: { user: window.localStorage.getItem( 'user' ) } } );
+         console.log('back-user');
       },
       backDetail() {
+         console.log('back-detail');
          var vm = this;
-         vm.$router.push({ name: 'detail' });
+         vm.$router.push( { name: 'detail', params: { detail: window.localStorage.getItem( 'detail' ) } } );
          if( vm.$router.name != 'map' )
          window.localStorage.setItem( 'map', false );
+         console.log('back-detail');
       },
       logout() {
          var vm = this;
-         vm.$router.push({ name: 'home' });
+         vm.$router.push( { name: 'home' } );
          window.localStorage.removeItem( 'login' );
       }
    },

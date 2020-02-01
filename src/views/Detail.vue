@@ -71,6 +71,9 @@
                      {{ option.description }}
                   </option>
                </b-select>
+               <b-field label="Message">
+                  <b-input maxlength="50" type="textarea"></b-input>
+               </b-field>
             </section>
             <footer class="is-flex modal-card-foot footer--modal">
                <button class="button is-primary" @click="savedState()">Enviar</button>
@@ -123,7 +126,6 @@ export default {
       }
    },
    created() {
-      console.log( 'Latitude', window.localStorage.getItem('latitude') );
       this.$axios.get( `smp.php?paquete_id=${this.$route.params.pkg}` )
       .then( response => {
          this.detailPkg.id = response.data[0].id;
@@ -147,6 +149,7 @@ export default {
          this.detailPkg.addressLatitude = response.data[0].latitud_direccion;
          this.detailPkg.addressLongitude = response.data[0].longitud_direccion;
       })
+      window.localStorage.setItem('detail', this.detailPkg.id);
    },
    computed: {
       getPaquete() {
@@ -231,6 +234,9 @@ export default {
 }
 .btn--show--map {
    width: 80px !important;
+}
+.modal .animation-content {
+   width: 90% !important;
 }
 .footer--modal {
    justify-content: flex-end;

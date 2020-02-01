@@ -58,14 +58,14 @@ export default {
            lat: latitude,
            lng: longitude
         },
-        console.log('punto inicio', this.markerOrigin);
+      //   console.log('punto inicio', this.markerOrigin);
         this.markerDestination = {
            lat: parseFloat( this.$route.params.latitud ),
            lng: parseFloat( this.$route.params.longitud )
         }
         this.markers.push( { position: this.markerOrigin }, { position: this.markerDestination } );
         this.center = this.markerOrigin;
-        console.log('marcadores', this.markers);
+      //   console.log('marcadores', this.markers);
       },
    },
    created() {
